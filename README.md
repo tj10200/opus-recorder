@@ -1,12 +1,18 @@
-# Opus & Wave Recorder
+# Raw Opus, Ogg and Wave Recorder
 
-A javascript library to encode the output of Web Audio API nodes in Ogg Opus or WAV format using WebAssembly.
+A javascript library originally forked from [chris-rudmin/opus-recorder](https://github.com/chris-rudmin/opus-recorder). 
+This library handles encoding the output of Web Audio API nodes in 
+ - Raw Opus 
+ - Ogg Opus
+ - WAV format 
 
+The underlying implementation uses webassembly transpiled audio libraries integrated into the Javascript API.
 
 #### Libraries Used
 
-- Libopus: v1.3.1 compiled with emscripten 1.39.14
-- speexDSP: 1.2.0 compiled with emscripten 1.39.14
+- Emscripten 2.0.8
+- Libopus: v1.3.1 compiled with emscripten
+- speexDSP: 1.2.0 compiled with emscripten
 
 #### Required Files
 
@@ -22,7 +28,8 @@ Examples for recording, encoding, and decoding are in `examples` folder.
 The `Recorder` object is available in the global namespace and supports CommonJS and AMD imports.
 
 ```js
-var rec = new Recorder([config]);
+import Recorder from 'raw-opus-recorder'
+var rec = new Recorder({config-object});
 ```
 
 Creates a recorder instance.
@@ -42,15 +49,15 @@ Creates a recorder instance.
 - **sourceNode**                  - (*optional*) An Instance of MediaStreamAudioSourceNode to use. If a sourceNode is provided, then closing the stream and audioContext will need to be managed by the implementation.
 
 
-#### Config options for OGG OPUS encoder
+#### Config options for OPUS encoder
 
 - **encoderApplication**          - (*optional*) Supported values are: `2048` - Voice, `2049` - Full Band Audio, `2051` - Restricted Low Delay. Defaults to `2049`.
-- **encoderBitRate**              - (*optional*) Target bitrate in bits/sec. The encoder selects an application-specific default when this is not specified.
+- **encoderBitRate**              - (*optional*) Target bitrate in bits/sec. The encoder selects an application-specific default when this is not specified. Example: (1s == 1000ms, frameSize == 20, encoderOutputMaxLength == 4000) -- (1000 / 20) * encoderOutputMaxLength === 200kbps desired. For perspective Spotify outputs between 96-160Kbps
 - **encoderComplexity**           - (*optional*) Value between 0 and 10 which determines latency and processing for encoding. `0` is fastest with lowest complexity. `10` is slowest with highest complexity. The encoder selects a default when this is not specified.
 - **encoderFrameSize**            - (*optional*) Specifies the frame size in ms used for encoding. Defaults to `20`.
 - **encoderSampleRate**           - (*optional*) Specifies the sample rate to encode at. Defaults to `48000`. Supported values are `8000`, `12000`, `16000`, `24000` or `48000`.
 - **maxFramesPerPage**            - (*optional*) Maximum number of frames to collect before generating an Ogg page. This can be used to lower the streaming latency. The lower the value the more overhead the ogg stream will incur. Defaults to `40`.
-- **originalSampleRateOverride**  - (*optional*) Override the ogg opus 'input sample rate' field. Google Speech API requires this field to be `16000`.
+- **originalSampleRateOverride**  - (*optional*) Override the JS AudioContext recorded sample rate in the ogg opus 'input sample rate' field. Google Speech API requires this field to be `16000`.
 - **resampleQuality**             - (*optional*) Value between 0 and 10 which determines latency and processing for resampling. `0` is fastest with lowest quality. `10` is slowest with highest quality. Defaults to `3`.
 - **streamPages**                 - (*optional*) `dataAvailable` event will fire after each encoded page. Defaults to `false`.
 - **rawOpus**                     - (*optional*) output events will not be encapsulated in an Ogg frame. Defaults to `false`.
@@ -142,6 +149,7 @@ The version of the library.
 rec.ondataavailable( arrayBuffer )
 ```
 A callback which returns an array buffer of audio data. If `streamPages` is `true`, this will be called with each page of encoded audio.  If `streamPages` is `false`, this will be called when the recording is finished with the complete data.
+If rawOpus is true, this will be called with each encoded opus packet.
 
 
 ```js
@@ -188,8 +196,8 @@ module.exports = {
 
 Then get the encoderPath using an import
 ```js
-import Recorder from 'opus-recorder';
-import encoderPath from 'opus-recorder/dist/encoderWorker.min.js';
+import Recorder from 'raw-opus-stream-recorder';
+import encoderPath from 'raw-opus-stream-recorder/dist/encoderWorker.min.js';
 
 const rec = new Recorder({ encoderPath });
 ```
@@ -261,8 +269,13 @@ Running the unit tests:
 npm test
 ```
 
-Clean the dist folder and git submodules:
+Clean the dist folder:
 ```bash
-make clean
+make cleanDist
+```
+
+Clean the dist folder and the submodules:
+```bash
+make cleanAll
 ```
 

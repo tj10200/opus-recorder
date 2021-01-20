@@ -2301,9 +2301,6 @@ if (typeof registerProcessor === 'function') {
 
     postPage(pageData) {
       if (pageData) {
-        if (!pageData.page || !pageData.page.buffer) {
-          console.trace('TJ - pagedata', pageData)
-        }
         this.port.postMessage( pageData, [pageData.page.buffer] );
       }
     }
