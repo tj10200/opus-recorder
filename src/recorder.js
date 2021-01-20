@@ -42,7 +42,7 @@ Recorder.isRecordingSupported = function(){
   return AudioContext && getUserMediaSupported && global.WebAssembly;
 };
 
-Recorder.version = '1.0.0';
+Recorder.version = '1.0.2';
 
 
 // Instance Methods

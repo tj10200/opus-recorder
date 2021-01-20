@@ -1,6 +1,6 @@
 {
   "name": "raw-opus-stream-recorder",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A library for recording opus encoded audio",
   "homepage": "https://github.com/tj10200/raw-opus-stream-recorder",
   "author": "TJ Johnson",
