@@ -1,9 +1,9 @@
 {
-  "name": "opus-recorder",
-  "version": "8.0.3",
+  "name": "raw-opus-stream-recorder",
+  "version": "1.0.2",
   "description": "A library for recording opus encoded audio",
-  "homepage": "https://github.com/chris-rudmin/opus-recorder",
-  "author": "Chris Rudmin",
+  "homepage": "https://github.com/tj10200/raw-opus-stream-recorder",
+  "author": "TJ Johnson",
   "keywords": [
     "Ogg",
     "Opus",
@@ -25,11 +25,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/chris-rudmin/opus-recorder.git"
+    "url": "git://github.com/tj10200/raw-opus-stream-recorder.git"
   },
   "bugs": {
-    "url": "https://github.com/chris-rudmin/opus-recorder/issues",
-    "email": "chris.rudmin@gmail.com"
+    "url": "https://github.com/tj10200/raw-opus-stream-recorder/issues",
+    "email": "tjjohnson10200@gmail.com"
   },
   "scripts": {
     "make": "make",
